@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ADICOM Days · L'appli participant</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1E1024">
+<link rel="icon" href="../img/icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=1">
+</head>
+<body>
+
+<!-- ORDINATEUR : présentation à côté du téléphone -->
+<aside class="desk" id="desk">
+  <a class="d-brand" href="../"><img src="../img/logo.png" alt="ADICOM"><span>ADICOM<b>Days</b></span></a>
+  <p class="d-k">L'appli participant</p>
+  <h1>Tout l'événement,<br>dans votre poche.</h1>
+  <p class="d-p">Agenda personnel, rencontres entre participants, votes et questions au micro, plan du lieu. Et pour l'organisation, une régie qui suit les arrivées en direct.</p>
+  <ul class="d-list">
+    <li data-go="agenda"><b>Mon agenda</b><span>Les sessions choisies, avec rappel 10 min avant</span></li>
+    <li data-go="reseau"><b>Rencontres</b><span>Les participants qui partagent vos centres d'intérêt</span></li>
+    <li data-go="live"><b>Vote et questions</b><span>En direct pendant les sessions</span></li>
+    <li data-go="plan"><b>Plan du lieu</b><span>Salles, stands et services</span></li>
+  </ul>
+  <div class="d-row">
+    <button class="d-regie" id="open-regie"><i></i>Ouvrir la régie organisateur</button>
+    <div class="d-qr"><div id="qr-desk"></div><span>Ouvrir sur<br>mon téléphone</span></div>
+  </div>
+  <p class="d-note">Aperçu du jour J : horaires, intervenants et participants en illustration jusqu'à l'annonce officielle.</p>
+</aside>
+
+<!-- L'APPLI -->
+<div class="device" id="device">
+<div class="app" id="app">
+  <header class="top" id="top">
+    <div class="tb-l"><img src="../img/logo.png" alt="" class="tb-logo"><div><b>ADICOM Days</b><span id="top-sub">Jour 1 · aperçu du jour J</span></div></div>
+    <div class="tb-r">
+      <button class="ic" id="btn-notif" aria-label="Annonces"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><i id="notif-dot"></i></button>
+      <button class="av" id="btn-billet" aria-label="Mon billet"><span id="av-ini">AK</span></button>
+    </div>
+  </header>
+
+  <div class="toast" id="toast"><small id="toast-k"></small><b id="toast-t"></b></div>
+
+  <main class="screens" id="screens">
+    <!-- ACCUEIL -->
+    <section class="scr on" id="s-accueil">
+      <div class="hero">
+        <img src="../img/hero.jpg" alt="">
+        <div class="hero-in">
+          <span class="chip-live"><i></i>En direct · <b id="clock">10:42</b></span>
+          <h1>Bonjour <span id="hi-name">Aya</span>,</h1>
+          <p>Bienvenue aux ADICOM Days. Votre prochaine session commence dans <b id="next-in">18 min</b>.</p>
+        </div>
+      </div>
+      <div class="pad">
+        <article class="now card-d" id="now"></article>
+        <div class="grid2">
+          <button class="tile" data-go="billet"><div class="tile-qr" id="qr-peek"></div><b>Mon billet</b><span id="tile-code">ADC-0000-00</span></button>
+          <button class="tile tile-v" data-go="live"><span class="t-ic"><svg viewBox="0 0 24 24"><path d="M9 11l2.5 2.5L16 9"/><rect x="3" y="4" width="18" height="16" rx="3"/></svg></span><b>Vote en cours</b><span id="tile-vote">2 options · 412 votes</span></button>
+        </div>
+        <div class="sec-t"><h2>Ma journée</h2><button data-go="agenda">Tout voir</button></div>
+        <ol class="mini-tl" id="mini-tl"></ol>
+        <div class="sec-t"><h2>À rencontrer</h2><button data-go="reseau">Voir tout</button></div>
+        <div class="peek" id="peek"></div>
+        <div class="sec-t"><h2>Annonces</h2></div>
+        <div id="ann-home"></div>
+      </div>
+    </section>
+
+    <!-- AGENDA -->
+    <section class="scr" id="s-agenda">
+      <div class="pad pt">
+        <h1 class="h1">Agenda</h1>
+        <div class="seg" id="ag-seg"><button class="on" data-v="mine">Mon agenda <em id="ag-n">0</em></button><button data-v="all">Programme</button></div>
+        <div class="days" id="ag-days"><button class="on" data-d="1">Jour 1</button><button data-d="2">Jour 2</button></div>
+        <div class="trk" id="ag-trk"></div>
+        <ol class="tl" id="tl"></ol>
+        <p class="note">Programme indicatif, en illustration, jusqu'à la publication du programme officiel.</p>
+      </div>
+    </section>
+
+    <!-- RÉSEAU -->
+    <section class="scr" id="s-reseau">
+      <div class="pad pt">
+        <h1 class="h1">Rencontres</h1>
+        <p class="sub">Proposées selon vos centres d'intérêt : <b id="my-int"></b></p>
+        <div class="stats3"><div><b id="r-sugg">10</b><span>suggestions</span></div><div><b id="r-req">0</b><span>demandes envoyées</span></div><div><b id="r-rdv">0</b><span>rendez-vous</span></div></div>
+        <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="r-q" placeholder="Rechercher un métier, un secteur…" aria-label="Rechercher"></div>
+        <div class="people" id="people"></div>
+        <p class="note">Participants en illustration : prénoms fictifs.</p>
+      </div>
+    </section>
+
+    <!-- LIVE : VOTE + QUESTIONS -->
+    <section class="scr" id="s-live">
+      <div class="pad pt">
+        <div class="live-h"><span class="chip-live dark"><i></i>Grande scène</span><h1 class="h1" id="live-title">Panel : les marques face aux créateurs</h1></div>
+        <div class="seg" id="lv-seg"><button class="on" data-v="vote">Vote</button><button data-v="q">Questions <em id="q-n">0</em></button></div>
+        <div id="pane-vote">
+          <div class="poll" id="poll"></div>
+          <div class="poll done" id="poll2"></div>
+        </div>
+        <div id="pane-q" hidden>
+          <form class="ask" id="ask"><textarea id="q-in" rows="3" maxlength="240" placeholder="Votre question aux intervenants…" aria-label="Votre question"></textarea><div class="ask-r"><label class="anon"><input type="checkbox" id="q-anon"><span>Anonyme</span></label><span id="q-cnt">0/240</span><button class="btn-l" type="submit">Envoyer</button></div></form>
+          <div class="q-sort"><button class="on" data-s="top">Les plus soutenues</button><button data-s="new">Récentes</button></div>
+          <ul class="qs" id="qs"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAN -->
+    <section class="scr" id="s-plan">
+      <div class="pad pt">
+        <h1 class="h1">Plan du lieu</h1>
+        <p class="sub">Plan indicatif : le lieu sera annoncé avec les dates.</p>
+        <div class="lv" id="lv"><button class="on" data-l="0">Niveau 0</button><button data-l="1">Niveau 1</button></div>
+        <div class="map" id="map"></div>
+        <div class="legend" id="legend"></div>
+        <div class="room-card" id="room-card"></div>
+      </div>
+    </section>
+
+    <!-- BILLET -->
+    <section class="scr" id="s-billet">
+      <div class="pad pt">
+        <button class="back" data-go="accueil">‹ Accueil</button>
+        <div class="pass" id="pass">
+          <div class="p-top"><img src="../img/logo.png" alt=""><div><small>ADICOM Days · 11<sup>e</sup> édition</small><b id="p-pass">Pass Participant</b></div></div>
+          <div class="p-name" id="p-name">Aya Koné</div>
+          <div class="p-org" id="p-org">Studio Plateau</div>
+          <div class="p-qr"><div id="qr-big"></div></div>
+          <div class="p-code" id="p-code">ADC-0000-00</div>
+          <div class="p-state" id="p-state"><i></i>Valide · à présenter à l'entrée</div>
+        </div>
+        <p class="note c">Augmentez la luminosité de l'écran pour un contrôle plus rapide.</p>
+        <div class="edit"><h3>Ce n'est pas votre billet ?</h3><form id="code-f"><input id="code-in" placeholder="Code billet, ex. ADC-7K2P-QX" aria-label="Code billet"><button class="btn-l">Ouvrir</button></form><a href="../#inscription">Pas encore inscrit ? Réserver ma place</a></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs" id="tabs">
+    <button class="on" data-go="accueil"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Accueil</span></button>
+    <button data-go="agenda"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Agenda</span></button>
+    <button data-go="reseau"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14.5c2.5.2 4 1.8 4.5 4.5"/></svg><span>Rencontres</span><i class="badge" id="b-reseau" hidden>0</i></button>
+    <button data-go="live"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg><span>En direct</span></button>
+    <button data-go="plan"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg><span>Plan</span></button>
+  </nav>
+
+  <div class="sheet" id="sheet" hidden><div class="sh-bg" id="sh-bg"></div><div class="sh"><i class="grab"></i><div id="sh-body"></div></div></div>
+</div>
+</div>
+
+<!-- RÉGIE ORGANISATEUR -->
+<div class="regie" id="regie" hidden>
+  <header class="rg-top">
+    <div class="rg-brand"><img src="../img/logo.png" alt=""><div><b>Régie ADICOM Days</b><span>Organisation · accueil et direct</span></div></div>
+    <span class="chip-live dark big"><i></i>Arrivées en direct · <b id="rg-clock">08:30</b></span>
+    <div class="rg-act"><button class="rg-speed" id="rg-speed">Accélérer ×20</button><button class="rg-close" id="rg-close">Fermer la régie</button></div>
+  </header>
+  <div class="rg-body">
+    <section class="rg-kpis">
+      <div class="k k-main"><small>Arrivés</small><b id="k-in">0</b><span>sur <em id="k-reg">0</em> inscrits</span><div class="kbar"><i id="k-bar"></i></div></div>
+      <div class="k"><small>Taux de présence</small><b id="k-rate">0 %</b><span id="k-rate-s">objectif 75 %</span></div>
+      <div class="k"><small>Dernières 15 min</small><b id="k-15">0</b><span>entrées</span></div>
+      <div class="k"><small>Attente à l'entrée</small><b id="k-wait">1 min</b><span id="k-wait-s">3 portes ouvertes</span></div>
+    </section>
+    <section class="rg-grid">
+      <div class="rg-card rg-chart"><div class="rc-h"><h3>Entrées par quart d'heure</h3><span id="peak">pic : -</span></div><div class="bars" id="bars"></div></div>
+      <div class="rg-card rg-pass"><div class="rc-h"><h3>Par pass</h3></div><div id="by-pass"></div><div class="rc-h mt"><h3>Par porte</h3></div><div id="by-door"></div></div>
+      <div class="rg-card rg-feed"><div class="rc-h"><h3>Fil des arrivées</h3><span class="chip-live dark sm"><i></i>direct</span></div><ul id="feed"></ul></div>
+      <div class="rg-card rg-scan"><div class="rc-h"><h3>Contrôle d'un billet</h3></div>
+        <form id="scan-f"><input id="scan-in" placeholder="Code billet ou nom" aria-label="Code billet ou nom"><button class="btn-l">Valider l'entrée</button></form>
+        <div id="scan-res" class="scan-res"></div>
+        <div class="rc-h mt"><h3>Annonce aux participants</h3></div>
+        <form id="push-f"><input id="push-in" placeholder="Ex. : le panel commence dans 5 min, Grande scène" aria-label="Annonce"><button class="btn-d">Envoyer</button></form>
+        <p class="push-log" id="push-log"></p>
+      </div>
+      <div class="rg-card rg-mod"><div class="rc-h"><h3>Questions à modérer</h3><span id="mod-n">0</span></div><ul id="mod"></ul></div>
+      <div class="rg-card rg-sess"><div class="rc-h"><h3>Remplissage des salles</h3></div><div id="rooms"></div></div>
+    </section>
+  </div>
+</div>
+
+<script src="../qrcode.min.js"></script>
+<script src="../data.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>

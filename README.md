@@ -1,2 +1,3 @@
-# adicom-days
-ADICOM Days : inscription, billet QR et appli participant
+# ADICOM Days
+
+Site d'inscription (billet QR, liste d'attente) et appli participant.
